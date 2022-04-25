@@ -1,0 +1,9 @@
+// writing to file // 
+
+Converting in Lower:: Hello
+First word: I/O
+
+Last word: Activity
+Longest Vowel Word: Activity
+
+

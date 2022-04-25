@@ -1,0 +1,128 @@
+Activity Five
+Joseph Carrillo 
+CST-150
+04/24/22
+*This is my own work* 
+
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+
+namespace Activity_Five
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        // declare string, variables 
+        String str;
+        String inputFile;
+        int max_val = 0, 
+            max_index = 0, 
+            
+            vow_count = 0,
+            vow_index;
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            // close program
+            this.Close();
+        }
+
+        private void clearBtn_Click(object sender, EventArgs e)
+        {
+            // clear user input
+            txtDisplay.Text = "";
+            txtFirstWord.Text = "";
+            txtLastWord.Text = "";
+            txtLongest.Text = "";
+            txtVowel.Text = "";
+
+            txtDisplay.Focus();
+        }
+
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            // open file dialog and select file
+            if(openFileDialog1.ShowDialog()== DialogResult.OK)
+            {
+                // file operation
+                str = System.IO.File.ReadAllText(openFileDialog1.FileName);
+                inputFile = openFileDialog1.FileName; 
+                
+                txtDisplay.Text = str.ToLower(); 
+
+                string[] array = str.Split(' '); 
+
+                txtFirstWord.Text = array[0]; 
+
+                txtLastWord.Text = array[array.Length -1]; 
+
+                // for loop //
+                for(int i =0; i< array.Length; i++) 
+                {
+                    if(max_val < array[i].Length)
+                    {
+                        max_val = array[i].Length;
+                        max_index = i;
+                    }
+                    if(vow_count < VowelCount(array[i]))
+                    {
+                        vow_count = VowelCount(array[i]);
+                        vow_index = i;
+                    }
+                }
+
+                txtLongest.Text = array[max_index];
+
+                txtVowel.Text = array[vow_index]; 
+
+
+                // Stream writie - write to file//
+                StreamWriter sw = new StreamWriter(Application.StartupPath + "\\write.txt"); // .txt file that is created
+
+                sw.WriteLine("Converting in Lower:: " + txtFirstWord.Text);
+
+                sw.WriteLine("First word: " + txtLastWord.Text); 
+
+                sw.WriteLine("Last word: " + txtLongest.Text); 
+
+                sw.WriteLine("Longest Vowel Word: " + txtVowel.Text); 
+
+                sw.Close();
+
+                MessageBox.Show("Congrats ! :) text file created "); // output display for message
+                                    
+            }
+        }
+        public int VowelCount(string sentence)
+        {
+            // vowels operations
+            int vowels = 0;
+            for(int i=0; i<sentence.Length-1; i++)
+            {
+                if((sentence[i] == 'a' || sentence[i] == 'e' || sentence[i] == 'i' || sentence[i] == 'o' || sentence[i] == 'u') ||
+                    (sentence[i] == 'A' || sentence[i] == 'E' || sentence[i] == 'I' || sentence[i] == 'O' || sentence[i] == 'U'))
+                {
+                    vowels = vowels + 1;
+                }
+            }
+            return vowels;
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
